@@ -6,6 +6,7 @@ function App() {
 
     const [ data, setData ] = useState();
     const [ loading, setLoading ] = useState(true);
+    const [ station, setStation ] = useState("");
 
     const table = {
         "station": "測站",
@@ -51,8 +52,7 @@ function App() {
         })();
     }, []);
 
-    if(loading == true) return "Loading...";
-    else return (
+    return (
         <div className="flex flex-col h-screen">
             <div className="navbar bg-base-100 sticky top-0 z-50">
                 <div className="navbar-start">
@@ -84,29 +84,38 @@ function App() {
             </div>
 
             <div className="container mx-auto flex-grow">
-                <div className="overflow-x-auto">
-                    <table className="table table-zebra w-full">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Data</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                Object.keys(data).map((key, value) => {
-                                    return (
-                                        <tr key={Math.random()}>
-                                            <th>{value + 1}</th>
-                                            <td>{table[key]}</td>
-                                            <td>{data[key]}</td>
+                <div className="overflow-x-auto text-center">
+                    {
+                        id === undefined ?
+                            <div>
+                                <h1 className="p-5">Enter station ID to query weather information.</h1>
+                                <input type="text" placeholder="Station ID" className="input input-bordered w-1/2" onChange={((e) => {setStation(e.target.value)})} /> <button className="btn" onClick={(() => {window.location.href += "?id=" + station})}>Query</button>
+                            </div> :
+                            loading === false ?
+                                <table className="table table-zebra w-full">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Data</th>
+                                            <th>Value</th>
                                         </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            Object.keys(data).map((key, value) => {
+                                                return (
+                                                    <tr key={Math.random()}>
+                                                        <th>{value + 1}</th>
+                                                        <td>{table[key]}</td>
+                                                        <td>{data[key]}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table> :
+                                <p>Loading...</p>
+                    }
                 </div>
             </div>
             <br />
