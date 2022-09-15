@@ -89,7 +89,7 @@ function App() {
                         id === undefined ?
                             <div>
                                 <h1 className="p-5">Enter station ID to query weather information.</h1>
-                                <input type="text" placeholder="Station ID" className="input input-bordered w-1/2" onChange={((e) => {setStation(e.target.value)})} onKeyDown={(e) => {if(e.key === "Enter"){window.location.href += "?id=" + station}}} /> <button className="btn" onClick={(() => {window.location.href += "?id=" + station})}>Query</button>
+                                <input type="text" placeholder="Station ID" className="input input-bordered w-1/2" onChange={((e) => {setStation(e.target.value)})} onKeyDown={(e) => {if(e.key === "Enter"){window.location.href = window.location.origin + "?id=" + station}}} /> <button className="btn" onClick={(() => {window.location.href += "?id=" + station})}>Query</button>
                             </div> :
                             loading === false ?
                                 <table className="table table-zebra w-full">
