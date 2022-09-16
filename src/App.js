@@ -56,13 +56,10 @@ function App() {
 
             const station_city = await fetch("https://mamiyanonoka.pythonanywhere.com/api/get/123").then(res => res.json());
             setCity_data(station_city);
+                
             setLoading(false);
         })();
     }, []);
-
-    if(loading === true){
-        return <Onloading />;
-    }
 
     return (
         <>
@@ -101,7 +98,7 @@ function App() {
 
                 <div className="container mx-auto flex-grow">
                     <div className="overflow-x-auto text-center">
-                        <CityStation id={id} city={city} city_data={city_data} data={data} table={table} />
+                        <CityStation loading={loading} id={id} city={city} city_data={city_data} data={data} table={table} />
                     </div>
                 </div>
                 <br />
