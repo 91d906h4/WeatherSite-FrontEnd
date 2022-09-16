@@ -10,6 +10,7 @@ import { Marker, Popup } from "react-leaflet";
 function App() {
 
     const [ data, setData ] = useState();
+    const [ city_data, setCity_data ] = useState();
     const [ loading, setLoading ] = useState(true);
     const [ station, setStation ] = useState("");
     const [ cookies, setCookies ] = useCookies();
@@ -47,12 +48,16 @@ function App() {
 
     const parsed = queryString.parse(window.location.search);
     const id = parsed.id;
+    const city = parsed.city;
 
     useEffect(() => {
         (async() => {
             const raw = await fetch("https://mamiyanonoka.pythonanywhere.com/api/104729/" + id).then(res => res.json());
             setData(raw);
             setLoading(false);
+
+            const station_city = await fetch("https://mamiyanonoka.pythonanywhere.com/api/get/123").then(res => res.json());
+            setCity_data(station_city);
         })();
     }, []);
 
@@ -97,7 +102,36 @@ function App() {
                             id === undefined ?
                                 <div>
                                     <h1 className="p-5">Enter station ID to query weather information.</h1>
-                                    <input type="text" placeholder="Station ID" className="input input-bordered w-1/2" onChange={((e) => {setStation(e.target.value)})} onKeyDown={(e) => {if(e.key === "Enter"){window.location.href = window.location.origin + "?id=" + station}}} /> <button className="btn" onClick={(() => {window.location.href += "?id=" + station})}>Query</button>
+                                    {
+                                        city !== undefined ?
+                                            city_data !== undefined ?
+                                                <>
+                                                    {
+                                                        Object.keys(city_data[city]).map((key) => {
+                                                            return (
+                                                                <>
+                                                                    <button className="btn" onClick={(() => {window.location.href = window.location.origin + "?id=" + city_data[city][key]})}>{key}</button>
+                                                                </>
+                                                            )
+                                                        })
+                                                    }
+                                                </> :
+                                                <>
+                                                    {/* city data undefined */}
+                                                </> :
+                                            <>
+                                                {
+                                                    Object.keys(city_data).map(key => {
+                                                        return (
+                                                            <>
+                                                                <button className="btn" onClick={(() => {window.location.href = window.location.origin + "?city=" + key})}>{key}</button>
+                                                            </>
+                                                        )
+                                                    })
+                                                }
+                                            </>
+                                    }
+                                    {/* <input type="text" placeholder="Station ID" className="input input-bordered w-1/2" onChange={((e) => {setStation(e.target.value)})} onKeyDown={(e) => {if(e.key === "Enter"){window.location.href = window.location.origin + "?id=" + station}}} /> <button className="btn" onClick={(() => {window.location.href += "?id=" + station})}>Query</button> */}
                                 </div> :
                                 loading === false ?
                                     <>
