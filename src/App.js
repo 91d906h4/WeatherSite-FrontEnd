@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { Helmet } from "react-helmet";
+import { MapContainer } from 'react-leaflet/MapContainer';
+import { TileLayer } from 'react-leaflet/TileLayer';
 
 import queryString from "query-string";
-import { Helmet } from "react-helmet";
+import { Marker, Popup } from "react-leaflet";
 
 function App() {
 
@@ -55,9 +58,10 @@ function App() {
 
     return (
         <>
-        <Helmet>
-            <html data-theme={cookies.color === "0" ? "dark" : "light"}></html>
-        </Helmet>
+            <Helmet>
+                <html data-theme={cookies.color === "0" ? "dark" : "light"}></html>
+            </Helmet>
+            <div id="map" height="180px"></div>
             <div className="flex flex-col h-screen">
                 <div className="navbar bg-base-100 sticky top-0 z-50">
                     <div className="navbar-start">
@@ -96,28 +100,41 @@ function App() {
                                     <input type="text" placeholder="Station ID" className="input input-bordered w-1/2" onChange={((e) => {setStation(e.target.value)})} onKeyDown={(e) => {if(e.key === "Enter"){window.location.href = window.location.origin + "?id=" + station}}} /> <button className="btn" onClick={(() => {window.location.href += "?id=" + station})}>Query</button>
                                 </div> :
                                 loading === false ?
-                                    <table className="table table-zebra w-full">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Data</th>
-                                                <th>Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                Object.keys(data).map((key, value) => {
-                                                    return (
-                                                        <tr key={Math.random()}>
-                                                            <th>{value + 1}</th>
-                                                            <td>{table[key]}</td>
-                                                            <td>{data[key] === "-99" ? "N/A" : data[key]}</td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody>
-                                    </table> :
+                                    <>
+                                        <table className="table table-zebra w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Data</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    Object.keys(data).map((key, value) => {
+                                                        return (
+                                                            <tr key={Math.random()}>
+                                                                <th>{value + 1}</th>
+                                                                <td>{table[key]}</td>
+                                                                <td>{data[key] === "-99" ? "N/A" : data[key]}</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <div className="flex items-center justify-center m-1">
+                                            <MapContainer center={[data["latitude"], data["longitude"]]} zoom={11} scrollWheelZoom={false} style={{width: "95%", height: "300px"}}>
+                                                <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                                                <Marker position={[data["latitude"], data["longitude"]]}>
+                                                    <Popup>
+                                                        測站：{data["station"]}<br />
+                                                        ID：{data["station_id"]}
+                                                    </Popup>
+                                                </Marker>
+                                            </MapContainer>
+                                        </div>
+                                    </> :
                                     <p>Loading...</p>
                         }
                     </div>
