@@ -21,6 +21,7 @@ function App() {
         "latitude": "緯度",
         "longitude": "經度",
         "latest_update_time": "最後更新時間",
+        "status": "status",
 
         "ELEV": "高度(m)",
         "WDIR": "風向(度)", 
@@ -60,6 +61,12 @@ function App() {
             setCity_data(station_city);
         })();
     }, []);
+
+    if(city_data === undefined){
+        return(
+            <>Loading...</>
+        )
+    }
 
     return (
         <>
