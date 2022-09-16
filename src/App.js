@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Helmet } from "react-helmet";
-import { MapContainer } from 'react-leaflet/MapContainer';
-import { TileLayer } from 'react-leaflet/TileLayer';
 
 import queryString from "query-string";
-import { Marker, Popup } from "react-leaflet";
+import Onloading from "./components/Onloading";
+import CityStation from "./components/CityStation";
 
 function App() {
 
     const [ data, setData ] = useState();
     const [ city_data, setCity_data ] = useState();
     const [ loading, setLoading ] = useState(true);
-    const [ station, setStation ] = useState("");
     const [ cookies, setCookies ] = useCookies();
 
     const table = {
@@ -55,17 +53,15 @@ function App() {
         (async() => {
             const raw = await fetch("https://mamiyanonoka.pythonanywhere.com/api/104729/" + id).then(res => res.json());
             setData(raw);
-            setLoading(false);
 
             const station_city = await fetch("https://mamiyanonoka.pythonanywhere.com/api/get/123").then(res => res.json());
             setCity_data(station_city);
+            setLoading(false);
         })();
     }, []);
 
-    if(city_data === undefined){
-        return(
-            <>Loading...</>
-        )
+    if(loading === true){
+        return <Onloading />;
     }
 
     return (
@@ -105,79 +101,7 @@ function App() {
 
                 <div className="container mx-auto flex-grow">
                     <div className="overflow-x-auto text-center">
-                        {
-                            id === undefined ?
-                                <div>
-                                    <h1 className="p-5">Enter station ID to query weather information.</h1>
-                                    {
-                                        city !== undefined ?
-                                            city_data !== undefined ?
-                                                <>
-                                                    {
-                                                        Object.keys(city_data[city]).map((key) => {
-                                                            return (
-                                                                <>
-                                                                    <button className="btn" onClick={(() => {window.location.href = window.location.origin + "?id=" + city_data[city][key]})}>{key}</button>
-                                                                </>
-                                                            )
-                                                        })
-                                                    }
-                                                </> :
-                                                <>
-                                                    {/* city data undefined */}
-                                                </> :
-                                            <>
-                                                {
-                                                    Object.keys(city_data).map(key => {
-                                                        return (
-                                                            <>
-                                                                <button className="btn" onClick={(() => {window.location.href = window.location.origin + "?city=" + key})}>{key}</button>
-                                                            </>
-                                                        )
-                                                    })
-                                                }
-                                            </>
-                                    }
-                                    {/* <input type="text" placeholder="Station ID" className="input input-bordered w-1/2" onChange={((e) => {setStation(e.target.value)})} onKeyDown={(e) => {if(e.key === "Enter"){window.location.href = window.location.origin + "?id=" + station}}} /> <button className="btn" onClick={(() => {window.location.href += "?id=" + station})}>Query</button> */}
-                                </div> :
-                                loading === false ?
-                                    <>
-                                        <table className="table table-zebra w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Data</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    Object.keys(data).map((key, value) => {
-                                                        return (
-                                                            <tr key={Math.random()}>
-                                                                <th>{value + 1}</th>
-                                                                <td>{table[key]}</td>
-                                                                <td>{data[key] === "-99" ? "N/A" : data[key]}</td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
-                                            </tbody>
-                                        </table>
-                                        <div className="flex items-center justify-center m-1">
-                                            <MapContainer center={[data["latitude"], data["longitude"]]} zoom={11} scrollWheelZoom={false} style={{width: "95%", height: "300px"}}>
-                                                <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                                                <Marker position={[data["latitude"], data["longitude"]]}>
-                                                    <Popup>
-                                                        測站：{data["station"]}<br />
-                                                        ID：{data["station_id"]}
-                                                    </Popup>
-                                                </Marker>
-                                            </MapContainer>
-                                        </div>
-                                    </> :
-                                    <p>Loading...</p>
-                        }
+                        <CityStation id={id} city={city} city_data={city_data} data={data} table={table} />
                     </div>
                 </div>
                 <br />
@@ -197,7 +121,7 @@ function App() {
                         </div>
                     </div> 
                     <div>
-                        <p>Copyright © 2022 - All right reserved by ACME Industries Ltd</p>
+                        <p>Copyright © 2022 - All right reserved by 91d906h4 & Sugar0406.</p>
                     </div>
                 </footer>
             </div>
