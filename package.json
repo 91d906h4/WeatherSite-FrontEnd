@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "daisyui": "^2.27.0",
+    "jquery": "^3.6.1",
     "leaflet": "^1.8.0",
     "query-string": "^7.1.1",
     "react": "^18.2.0",
@@ -15,6 +16,7 @@
     "react-helmet": "^6.1.0",
     "react-leaflet": "^4.0.2",
     "react-openlayers": "^0.3.0",
+    "react-responsive-image": "^5.0.0",
     "react-router-dom": "^5.3.3",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
