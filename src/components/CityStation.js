@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Onloading from "./Onloading";
 import WeatherData from "./WeatherData";
 import queryString from "query-string";
+import ImageMap from "image-map"; // https://www.npmjs.com/package/image-map
 
 function CityStation(){
     const [ data, setData ] = useState();
@@ -23,6 +24,7 @@ function CityStation(){
             setCity_data(station_city);
                 
             setLoading(false);
+            setTimeout(() => ImageMap('img[usemap]'), 100);
         })();
     }, []);
 
