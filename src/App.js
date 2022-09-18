@@ -41,7 +41,7 @@ function App() {
                 </div>
 
                 <div className="container mx-auto flex-grow">
-                    <div className="overflow-x-auto flex text-center justify-center">
+                    <div className="overflow-x-auto text-center">
                         <CityStation />
                     </div>
                 </div>
