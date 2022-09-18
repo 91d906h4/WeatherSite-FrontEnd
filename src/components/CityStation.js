@@ -24,7 +24,7 @@ function CityStation(){
             setCity_data(station_city);
                 
             setLoading(false);
-            setTimeout(() => ImageMap('img[usemap]'), 100);
+            setTimeout(() => ImageMap('img[usemap]'), 100); // Call ImageMap function after rendering.
         })();
     }, []);
 

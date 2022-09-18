@@ -1,7 +1,7 @@
 function Onloading(){
     return (
         <div>
-            loading...
+            Loading...
         </div>
     )
 }
