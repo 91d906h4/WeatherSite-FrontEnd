@@ -1,23 +1,18 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import About from './components/About';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Layout from './components/Layout';
 
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
-        <Routes>
-            <Route path='/' element={<Layout />}>
-                <Route index element={<App />} />
-                <Route path='/about' element={<About />} />
-            </Route>
-        </Routes>
+        <Switch>
+            <Route index path='/' component={App} />
+        </Switch>
     </BrowserRouter>
 );
 

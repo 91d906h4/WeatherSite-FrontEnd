@@ -26,6 +26,13 @@ function CityStation(){
             setCity_data(station_city);
                 
             setLoading(false);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+            setTimeout(() => ImageMap('img[usemap]'), 100);
+>>>>>>> parent of f324d48 (update react-route-dom to latest version and add About page)
+>>>>>>> 008de2d880da7aafb85707b3edace058d739abd1
         })();
     }, []);
 
